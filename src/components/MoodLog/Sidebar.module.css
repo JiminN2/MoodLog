@@ -8,6 +8,8 @@
   background-color: #010111;
   color: #ffffff;
   padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
 
  
 }
@@ -41,4 +43,12 @@
 }
 .submitButton:hover {
   background-color: #e0e0e0;
+}
+
+.aiEmotion {
+  background-color: #ffffff;
+  color: #010111;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 15px;
 }
