@@ -1,16 +1,5 @@
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  background-color: #00000a;
-  /* overflow: hidden; */
-}
-
 body {
-  margin: 0;
   padding: 0;
-  background-color: #00000a;
 }
 
 .title {
@@ -27,7 +16,4 @@ body {
   height : 100%;
   background-color: #00000a;
   color: #ffffff;
-}
-* {
-  box-sizing: border-box;
 }

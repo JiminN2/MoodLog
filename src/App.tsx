@@ -1,10 +1,12 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
-import styles from "./App.module.css";
-import Header from "./components/Header";
 import Explore from "./components/NasaToday";
 import Introduction from "./components/Introduction";
+import Months from "./components/MoodLog/Months";
 import MoodLog from "./components/MoodLog/MoodLog";
+import MainLayout from "./Layout";
+
+
 
 type Track = {
   label: string;
@@ -13,7 +15,6 @@ type Track = {
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -52,48 +53,41 @@ function App() {
     setIsPlaying(false);
   };
 
-  const shouldShowHeader = location.pathname !== "/mood-log";
+  const introProps = {
+    activeTrack,
+    isPlaying,
+    hasNextTrack,
+    onTogglePlay: handleTogglePlay,
+    onNextTrack: handleNextTrack,
+    onTrackEnd: handleTrackEnd,
+  }
 
 
-
-  
   return (
-    <div>
-      {shouldShowHeader && <Header onTrackPlay={handleTrackPlay} />}
-      <div className={styles.container}>
+    
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Introduction
-                activeTrack={activeTrack}
-                isPlaying={isPlaying}
-                hasNextTrack={hasNextTrack}
-                onTogglePlay={handleTogglePlay}
-                onNextTrack={handleNextTrack}
-                onTrackEnd={handleTrackEnd}
-              />
-            }
-          />
-          <Route
-            path="/introduction"
-            element={
-              <Introduction
-                activeTrack={activeTrack}
-                isPlaying={isPlaying}
-                hasNextTrack={hasNextTrack}
-                onTogglePlay={handleTogglePlay}
-                onNextTrack={handleNextTrack}
-                onTrackEnd={handleTrackEnd}
-              />
-            }
-          />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/mood-log" element={<MoodLog />} />
+          <Route element={<MainLayout onTrackPlay={handleTrackPlay} />} >
+            <Route
+              path="/"
+              element={
+                <Introduction {...introProps} />
+              }
+            />
+            <Route
+              path="/introduction"
+              element={
+                <Introduction {...introProps} />
+              }
+            />
+            <Route path="/explore" element={<Explore />} />
+          </Route>
+
+          <Route path="/mood-log" element={<Months />} />
+          <Route path="/mood-log/:month" element={<MoodLog />} />
         </Routes>
-      </div>
-    </div>
+
   );
 }
 
 export default App;
+
