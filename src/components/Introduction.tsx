@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import {  useEffect, useRef } from "react";
 import styles from "./Introduction.module.css";
 import IntroductionBg from "./IntroductionBg.tsx";
+import MagneticDotButton from "./DotButton.tsx";
 
 type Props = {
   activeTrack: {
@@ -23,7 +24,6 @@ export default function Introduction({
   onTrackEnd,
 }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -73,8 +73,7 @@ export default function Introduction({
         )}
       </div>
 
-      <h1>Introduction</h1>
-      <p>Welcome to the Earth Project</p>
+     <MagneticDotButton to="/" />
 
       {activeTrack && (
         <>

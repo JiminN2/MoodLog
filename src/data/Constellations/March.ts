@@ -1,0 +1,52 @@
+import type { ConstellationData } from "./type";
+
+export const march: ConstellationData = {
+    nodes: [
+        { data: { id: "n1" }, position: { x: 123, y: 137 } },
+        { data: { id: "n2" }, position: { x: 112, y: 216 } },
+        { data: { id: "n3" }, position: { x: 127, y: 273 } },
+        { data: { id: "n4" }, position: { x: 151, y: 320 } },
+        { data: { id: "n5" }, position: { x: 173, y: 434 } },
+        { data: { id: "n6" }, position: { x: 147, y: 537 } },
+        { data: { id: "n7" }, position: { x: 282, y: 519 } },
+        { data: { id: "n8" }, position: { x: 244, y: 422 } },
+        { data: { id: "n9" }, position: { x: 266, y: 345 } },
+        { data: { id: "n10" }, position: { x: 236, y: 299 } },
+        { data: { id: "n11" }, position: { x: 152, y: 207 } },
+        { data: { id: "n12" }, position: { x: 189, y: 135 } },
+        { data: { id: "n13" }, position: { x: 209, y: 426 } },
+        { data: { id: "n14" }, position: { x: 393, y: 335 } },
+        { data: { id: "n15" }, position: { x: 396, y: 367 } },
+        { data: { id: "n16" }, position: { x: 398, y: 422 } },
+        { data: { id: "n17" }, position: { x: 378, y: 457 } },
+        { data: { id: "n18" }, position: { x: 392, y: 290 } },
+        { data: { id: "n19" }, position: { x: 365, y: 260 } },
+        { data: { id: "n20" }, position: { x: 615, y: 334 } },
+        { data: { id: "n21" }, position: { x: 694, y: 300 } },
+        { data: { id: "n22" }, position: { x: 755, y: 286 } },
+        { data: { id: "n23" }, position: { x: 839, y: 269 } },
+        { data: { id: "n24" }, position: { x: 1020, y: 152 } },
+        { data: { id: "n25" }, position: { x: 714, y: 351 } },
+        { data: { id: "n26" }, position: { x: 789, y: 389 } },
+        { data: { id: "n27" }, position: { x: 881, y: 401 } },
+        { data: { id: "n28" }, position: { x: 963, y: 408 } },
+        { data: { id: "n29" }, position: { x: 989, y: 362 } },
+        { data: { id: "n30" }, position: { x: 1026, y: 96 } },
+        { data: { id: "n31" }, position: { x: 820, y: 520 } },
+        { data: { id: "n32" }, position: { x: 880, y: 560 } },
+        { data: { id: "n33" }, position: { x: 940, y: 600 } },
+        { data: { id: "n34" }, position: { x: 1000, y: 560 } },
+        { data: { id: "n35" }, position: { x: 1060, y: 520 } }
+      ],
+      paths : [
+        ["n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8", "n9", "n10", "n4"],
+        ["n2", "n11", "n12"],
+        ["n5", "n13", "n8"],
+        ["n9", "n14", "n15", "n16", "n17"],
+        ["n14", "n18", "n19"],
+        ["n20", "n21", "n22", "n23", "n24"],
+        ["n20", "n25", "n26", "n27", "n28", "n29", "n24", "n30"],
+        ["n31", "n32", "n33", "n34", "n35"],
+        ["n32", "n35"]
+]      
+}

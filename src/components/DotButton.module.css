@@ -1,0 +1,47 @@
+.magneticButton {
+  position: absolute;
+  top: 50%;
+  left: -30%;
+  width: 50px;
+  height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.35s ease;
+}
+
+/* 커서가 반경 안에 들어왔을 때 살짝 커졌다 작아지는 펄스 */
+.dotPulse {
+  animation: pulseOnce 1.5s ease;
+}
+
+@keyframes pulseOnce {
+  0% { transform: scale(1); }
+  50% {transform: scale(1.5); } 
+  100% { transform: scale(1); }
+}
+
+/* 클릭 시 화면 전체로 확대되는 전환 효과 */
+.expanding {
+  animation: expandFill 0.6s ease forwards;
+}
+
+@keyframes expandFill {
+  to {
+    transform: scale(40);
+    background: black;
+    border-color: transparent;
+  }
+}
