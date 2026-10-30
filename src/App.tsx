@@ -2,7 +2,6 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import Explore from "./components/NasaToday";
 import Introduction from "./components/Introduction";
-import Months from "./components/MoodLog/Months";
 import MoodLog from "./components/MoodLog/MoodLog";
 import MainLayout from "./Layout";
 
@@ -82,8 +81,8 @@ function App() {
             <Route path="/explore" element={<Explore />} />
           </Route>
 
-          <Route path="/mood-log" element={<Months />} />
-          <Route path="/mood-log/:month" element={<MoodLog />} />
+          <Route path="/mood-log" element={<Introduction {...introProps} />} />
+          <Route path="/mood-log/:year/:month" element={<MoodLog />} />
         </Routes>
 
   );
