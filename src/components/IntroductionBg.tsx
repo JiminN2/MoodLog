@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import styles from "./IntroductionBg.module.css";
 
 type Props = { isPlaying?: boolean };
 
@@ -90,7 +91,7 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
     };
     window.addEventListener("scroll", onScroll, { passive:true });
 
-    const CAM_Z_START = 80, CAM_Z_END = -40;
+    const CAM_Z_START = 80, CAM_Z_END = -20;
 
     // ── Mouse ─────────────────────────────────────────────────────────────────
     const mouse = { x:0, y:0 };
@@ -135,7 +136,7 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
       const ps = 1-p*0.7;
       camera.position.x += (mouse.x*3*ps-camera.position.x)*0.02;
       camera.position.y += (mouse.y*5*ps-camera.position.y)*0.03;
-      camera.lookAt(0, -1.5, -30);
+      camera.lookAt(0, -1.5, camera.position.z - 30);
 
       renderer.render(scene, camera);
     };
@@ -161,7 +162,14 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
 
   return (
     <>
-      <div ref={mountRef} style={{ position:"fixed", inset:0, width:"100vw", height:"100vh", zIndex:0, pointerEvents:"none" }} />
+      <div
+      ref={mountRef}
+      style={{ position: "fixed", inset: 0, width: "100vw", height: "100vh", zIndex: 0, pointerEvents: "none" }}
+    />
+    <div className={styles.scrollHint}>
+      <span>scroll down</span>
+      <i className={styles.arrow} />
+    </div>
     </>
   );
 }

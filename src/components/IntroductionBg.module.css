@@ -1,0 +1,35 @@
+.scrollHint {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  z-index: 1;                 /* above the canvas (z-index: 0) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  pointer-events: none;
+  /* fades out as you scroll (--p comes from useScrollProgress) */
+  opacity: clamp(0, calc(1 - var(--p, 0) / 0.08), 1);
+}
+
+.arrow {
+  width: 1px;
+  height: 36px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), #fff);
+  animation: drip 1.8s ease-in-out infinite;
+}
+
+@keyframes drip {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow { animation: none; }
+}

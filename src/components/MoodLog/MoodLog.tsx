@@ -1,11 +1,10 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import styles from "./MoodLog.module.css";
 import HeaderMoodLog from "./HeaderMoodLog.tsx";
 import Sidebar from "./Sidebar.tsx";
 import { constellationsByMonth } from "@/data/Constellations";
 import ConstellationGraph from "./ConstellationGraph.tsx";
-import { MONTHS } from "@/constants/months";
 
 type Mood = {
   label: string;
@@ -18,14 +17,21 @@ type NodeMoods = Record<string, Mood>;
 
 export default function MoodLog() {
   const navigate = useNavigate();
-  const { month } = useParams<{ month: string }>();
-  const monthNumber = MONTHS.indexOf(month as typeof MONTHS[number]) + 1; // 월 이름을 숫자로 변환 (1~12)
+  const { year, month } = useParams<{ year: string; month: string }>();
+
+  const yearNumber = Number(year); 
+  const monthNumber = Number(month);
+  const isValid = 
+   Number.isInteger(yearNumber) && Number.isInteger(monthNumber) && monthNumber >= 1 && monthNumber <= 12;
+  const periodKey = `${yearNumber}-${monthNumber}`;
+
+
   const data = constellationsByMonth[monthNumber]; 
 
   const [selectedNode, setSelectedNode] = useState<string>('');
   const [journals, setJournals] = useState<Record<string, string>>({}); // 노드별 일기 내용을 저장하는 상태
-  const [nodeMoodsByMonth, setNodeMoodsByMonth] = useState<Record<number, NodeMoods>>({}); // 월별 노드 감정 상태를 저장하는 상태
-  const nodeMoods = nodeMoodsByMonth[monthNumber] ?? {};
+  const [nodeMoodsByMonth, setNodeMoodsByMonth] = useState<Record<string, NodeMoods>>({}); // 월별 노드 감정 상태를 저장하는 상태
+  const nodeMoods = nodeMoodsByMonth[periodKey] ?? {};
 
 
  
@@ -39,13 +45,28 @@ export default function MoodLog() {
     [nodeMoods]
   )
 
+    const journalsForPeriod = useMemo(() => {
+    const prefix = `${periodKey}:`;
+    return Object.fromEntries(
+      Object.entries(journals)
+        .filter(([key]) => key.startsWith(prefix))
+        .map(([key, value]) => [key.slice(prefix.length), value])
+    );
+  }, [journals, periodKey]);
+
+
+  if (!isValid) {
+    return <Navigate to="/moodlog" replace />;
+  }
+
+
   // 사이드바에서 감정 상태를 업데이트하는 함수
   const handleSelectMood = (mood: Mood) => {
     if (!selectedNode) return;
       setNodeMoodsByMonth((prev) => ({
       ...prev,
-      [monthNumber]: {
-        ...(prev[monthNumber] ?? {}),
+      [periodKey]: {
+        ...(prev[periodKey] ?? {}),
         [selectedNode]: mood
       },
     }));
@@ -55,7 +76,7 @@ export default function MoodLog() {
   const handleSubmitJournal = (nodeId: string, journal: string) => {
     setJournals((prev) => ({
       ...prev,
-      [nodeId] : journal,
+      [`${periodKey}:${nodeId}`] : journal,
     }));
 
     console.log("저장된 노드", nodeId);
@@ -80,7 +101,7 @@ export default function MoodLog() {
         </div>      
         <Sidebar 
           selectedNode={selectedNode} 
-          journals={journals}
+          journals={journalsForPeriod}
           onSelectMood = {handleSelectMood}
           onSubmit={handleSubmitJournal}
         />

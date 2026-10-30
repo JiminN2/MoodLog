@@ -1,0 +1,38 @@
+.months-root {
+  --text: #fff; --dim: rgba(220,230,255,.6); --accent: #9db4ff;
+  --mono: "Roboto Mono", ui-monospace, Menlo, monospace;
+  position: fixed; inset: 0; z-index: 2; color: var(--text);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+.months-root * { box-sizing: border-box; }
+
+.months-root .rail { position: absolute; inset: 0; touch-action: none; cursor: grab;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 1%, #000 18%, #000 82%, transparent 99%);
+          mask-image: linear-gradient(to bottom, transparent 1%, #000 18%, #000 82%, transparent 99%); }
+.months-root .rail:active { cursor: grabbing; }
+.months-root .line { position: absolute; top: 0; bottom: 0; width: 1px; margin-left: -.5px;
+  background: linear-gradient(to bottom, transparent 0, rgba(255,255,255,.35) 30%, rgba(255,255,255,.9) 50%, rgba(255,255,255,.25) 70%, transparent 100%); }
+
+.months-root .node { position: absolute; top: 0; left: 0; will-change: transform, opacity; cursor: pointer; }
+.months-root .ring { position: absolute; left: 0; top: 0; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 50%;
+  border: 2px solid #fff; background: #070a1c; display: grid; place-items: center; }
+.months-root .node.now .ring { border-color: var(--accent); }
+.months-root .core { width: 38%; height: 38%; border-radius: 50%; background: #fff; box-shadow: 0 0 10px 2px #fff; opacity: 0; }
+.months-root .node.on .ring { box-shadow: 0 0 0 5px rgba(157,180,255,.18), 0 0 34px 8px rgba(157,180,255,.65), inset 0 0 8px rgba(157,180,255,.5); }
+.months-root .node.on .ring::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 1px solid #fff; animation: ping 2.2s ease-out infinite; }
+@keyframes ping { from { transform: scale(1); opacity: .9; } to { transform: scale(2.4); opacity: 0; } }
+
+.months-root .name, .months-root .num { position: absolute; top: 0; white-space: nowrap; }
+.months-root .name { transform-origin: 0 50%; font-size: 1rem; font-weight: 300; letter-spacing: .03em; }
+.months-root .name small { display: block; margin-top: 4px; font-size: .5rem; color: var(--accent); letter-spacing: .1em; }
+.months-root .num { transform-origin: 100% 50%; font: 300 .9rem var(--mono); color: var(--dim); }
+
+.months-root .top, .months-root .bottom { position: absolute; left: 24px; right: auto; display: flex; justify-content: space-between;
+  font-size: .78rem; letter-spacing: .08em; color: var(--dim); }
+.months-root .top { top: calc(22px + env(safe-area-inset-top, 0px)); color: #fff; }
+.months-root .bottom { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+.months-root .year { display: inline-flex; align-items: center; gap: 4px; margin: 0; }
+.months-root .year b { min-width: 4.2ch; text-align: center; font: 400 .95rem var(--mono); letter-spacing: .06em; }
+.months-root .year button { background: none; border: 0; color: #fff; font-size: 1.4rem; line-height: 1; padding: 6px 10px; cursor: pointer; }
+.months-root .year button:disabled { opacity: .25; cursor: default; }
+@media (prefers-reduced-motion: reduce) { .months-root .node.on .ring::after { animation: none; } }
