@@ -22,9 +22,6 @@ export default function Header({ onTrackPlay }: Props) {
           </ul>
           <ul className={styles.right}>
             <li>
-              <Link to="/explore">Explore</Link>
-            </li>
-            <li>
               <Link to="/mood-log">기록하기</Link>
             </li>
             <li>

@@ -1,6 +1,5 @@
 import { Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
-import Explore from "./components/NasaToday";
 import Introduction from "./components/Introduction";
 import MoodLog from "./components/MoodLog/MoodLog";
 import MainLayout from "./Layout";
@@ -16,11 +15,10 @@ type Track = {
 
 function BgLayout({ isPlaying }: { isPlaying: boolean }) {
   const {pathname} = useLocation();
-  const showBg = pathname !== "/explore";
   const locked = pathname.startsWith("/mood-log/") ? 0.85 : undefined;
   return (
     <>
-     {showBg && <IntroductionBg isPlaying={isPlaying} lockedProgress={locked} />}
+     <IntroductionBg isPlaying={isPlaying} lockedProgress={locked} />
      <Outlet />
     </>
   )
@@ -95,7 +93,6 @@ function App() {
                 <Introduction {...introProps} />
               }
             />
-            <Route path="/explore" element={<Explore />} />
           </Route>
          
 
