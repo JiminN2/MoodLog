@@ -3,6 +3,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    background: transparent;
 }
 
 .wrapper {
@@ -10,8 +11,7 @@
     position: relative;
     width: 100%;
     height: calc(100vh - 50px);
- 
-    /* //아 제발 ㅜㅜㅜㅜ */
+    background: transparent;
 }
 
 .cy {
@@ -20,6 +20,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
+    background: transparent;
 }
 
 .backButton {

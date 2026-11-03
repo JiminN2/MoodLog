@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 import styles from "./Introduction.module.css";
 import IntroductionBg from "./IntroductionBg.tsx";
 import MagneticDotButton from "./DotButton.tsx";
-import MonthsRail from "./MonthsRail.tsx";
-import { useScrollProgress } from "./useScrollProgress.ts";
+import MonthsRail from "./MonthsRail";
+import { useScrollProgress } from "./useScrollProgress";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {useLayoutEffect} from "react";
 
 interface ActiveTrack {
   label: string;
@@ -25,11 +27,17 @@ interface Props {
 //   month: number;
 // }
 
+
 export default function Introduction({
   activeTrack, isPlaying, hasNextTrack, onTogglePlay, onNextTrack, onTrackEnd,
 }: Props) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
+
+  const {state} = useLocation();
+useLayoutEffect(() => {
+  if ( state?. fromMonth)window.scrollTo(0, document.documentElement.scrollHeight);
+}, []);
 
   
   useScrollProgress(); // ← 추가
@@ -43,7 +51,6 @@ export default function Introduction({
 
   return (
     <div className={styles.landing}>
-      <IntroductionBg isPlaying={isPlaying} />
 
       {/* ← 추가: 스크롤 공간 */}
       <div style={{ height: "300vh" }} />

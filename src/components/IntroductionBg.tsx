@@ -2,15 +2,17 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import styles from "./IntroductionBg.module.css";
 
-type Props = { isPlaying?: boolean };
+type Props = { isPlaying?: boolean; lockedProgress?: number };
 
-export default function IntroductionBg({ isPlaying = false }: Props) {
+export default function IntroductionBg({ isPlaying = false, lockedProgress }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
+
   const isPlayingRef = useRef(isPlaying);
 
 
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
-
+  const lockedRef = useRef(lockedProgress);
+  useEffect(() => {lockedRef.current = lockedProgress;}, [lockedProgress]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -53,6 +55,12 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
 
     // ── Background star field ─────────────────────────────────────────────────
     const N   = 1200;
+    const SPREAD_X = 220, SPREAD_Y = 130, SPREAD_Z = 120;
+const randomPos = (out: Float32Array, i: number) => {
+  out[i*3]   = (Math.random() - 0.5) * SPREAD_X;
+  out[i*3+1] = (Math.random() - 0.5) * SPREAD_Y;
+  out[i*3+2] = (Math.random() - 0.5) * SPREAD_Z;
+};
     const bgPos   = new Float32Array(N * 3);
     const bgVel   = new Float32Array(N * 3);
     const bgCol   = new Float32Array(N * 3);
@@ -64,11 +72,7 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
       [1.0,0.98,0.92],[0.75,0.88,1.0],[0.95,0.95,1.0],[0.7,0.82,1.0],
     ];
     for (let i = 0; i < N; i++) {
-      const r = Math.pow(Math.random(),0.4)*90;
-      const th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
-      bgPos[i*3]   = r*Math.sin(ph)*Math.cos(th);
-      bgPos[i*3+1] = r*Math.sin(ph)*Math.sin(th)*0.55;
-      bgPos[i*3+2] = r*Math.cos(ph)*0.4;
+      randomPos(bgPos, i);
       const spd=0.002+Math.random()*0.004, a=Math.random()*Math.PI*2, b=Math.random()*Math.PI*2;
       bgVel[i*3]=spd*Math.cos(a)*Math.sin(b); bgVel[i*3+1]=spd*Math.sin(a)*Math.sin(b)*0.5; bgVel[i*3+2]=spd*Math.cos(b)*0.3;
       const c=pal[Math.floor(Math.random()*pal.length)], br=0.6+Math.random()*0.4;
@@ -119,12 +123,11 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
         pos3[i*3+1]+=(bgVel[i*3+1]+Math.cos(t*0.12+bgPh[i])*0.002)*speed;
         pos3[i*3+2]+=bgVel[i*3+2]*speed;
         const x=pos3[i*3],y=pos3[i*3+1],z=pos3[i*3+2];
-        if (Math.sqrt(x*x+y*y+z*z)>95) {
-          const s2=0.006+Math.random()*0.01, a2=Math.random()*Math.PI*2, b2=Math.random()*Math.PI*2;
-          bgVel[i*3]=s2*Math.cos(a2)*Math.sin(b2); bgVel[i*3+1]=s2*Math.sin(a2)*Math.sin(b2)*0.5; bgVel[i*3+2]=s2*Math.cos(b2)*0.3;
-          const nr=Math.pow(Math.random(),0.4)*90, nt=Math.random()*Math.PI*2, np=Math.acos(2*Math.random()-1);
-          pos3[i*3]=nr*Math.sin(np)*Math.cos(nt); pos3[i*3+1]=nr*Math.sin(np)*Math.sin(np)*0.55; pos3[i*3+2]=nr*Math.cos(np)*0.4;
-        }
+        if (Math.abs(x) > SPREAD_X/2 || Math.abs(y) > SPREAD_Y/2 || Math.abs(z) > SPREAD_Z/2) {
+  const s2=0.006+Math.random()*0.01, a2=Math.random()*Math.PI*2, b2=Math.random()*Math.PI*2;
+  bgVel[i*3]=s2*Math.cos(a2)*Math.sin(b2); bgVel[i*3+1]=s2*Math.sin(a2)*Math.sin(b2)*0.5; bgVel[i*3+2]=s2*Math.cos(b2)*0.3;
+  randomPos(pos3, i);
+}
       }
       bgGeo.attributes.position.needsUpdate = true;
       bgParticles.rotation.y += (0.0003+mouse.x*0.0001)*speed;
@@ -166,10 +169,12 @@ export default function IntroductionBg({ isPlaying = false }: Props) {
       ref={mountRef}
       style={{ position: "fixed", inset: 0, width: "100vw", height: "100vh", zIndex: 0, pointerEvents: "none" }}
     />
-    <div className={styles.scrollHint}>
-      <span>scroll down</span>
-      <i className={styles.arrow} />
-    </div>
+    {lockedProgress === undefined && (
+      <div className={styles.scrollHint}>
+        <span>scroll down</span>
+        <i className={styles.arrow} />
+      </div>
+    )}
     </>
   );
 }

@@ -31,7 +31,7 @@ export default function ConstellationGraph({ data, nodeColors, onNodeTap } : Pro
                         color: "white",
                         width: 20,
                         height: 20,
-                        label: "data(id)",
+                        label: (ele: any) => String(ele.id()).replace(/^n/, ""),
                     },
                 },
             ],

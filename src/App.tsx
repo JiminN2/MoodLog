@@ -1,9 +1,10 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import Explore from "./components/NasaToday";
 import Introduction from "./components/Introduction";
 import MoodLog from "./components/MoodLog/MoodLog";
 import MainLayout from "./Layout";
+import IntroductionBg from "./components/IntroductionBg.tsx";
 
 
 
@@ -11,6 +12,20 @@ type Track = {
   label: string;
   file: string;
 };
+
+
+function BgLayout({ isPlaying }: { isPlaying: boolean }) {
+  const {pathname} = useLocation();
+  const showBg = pathname !== "/explore";
+  const locked = pathname.startsWith("/mood-log/") ? 0.85 : undefined;
+  return (
+    <>
+     {showBg && <IntroductionBg isPlaying={isPlaying} lockedProgress={locked} />}
+     <Outlet />
+    </>
+  )
+}
+
 
 function App() {
   const navigate = useNavigate();
@@ -64,7 +79,9 @@ function App() {
 
   return (
     
+    
         <Routes>
+          <Route element={<BgLayout isPlaying={isPlaying} />} >
           <Route element={<MainLayout onTrackPlay={handleTrackPlay} />} >
             <Route
               path="/"
@@ -80,9 +97,11 @@ function App() {
             />
             <Route path="/explore" element={<Explore />} />
           </Route>
+         
 
           <Route path="/mood-log" element={<Introduction {...introProps} />} />
           <Route path="/mood-log/:year/:month" element={<MoodLog />} />
+          </Route>
         </Routes>
 
   );

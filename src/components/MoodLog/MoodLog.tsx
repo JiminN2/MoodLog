@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar.tsx";
 import { constellationsByMonth } from "@/data/Constellations";
 import ConstellationGraph from "./ConstellationGraph.tsx";
 
+
 type Mood = {
   label: string;
   color: string;
