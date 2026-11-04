@@ -34,13 +34,3 @@ a {
   list-style: none;
 
 }
-
-
-.trackButton {
-  background: transparent;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
-}

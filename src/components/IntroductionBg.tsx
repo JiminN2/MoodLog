@@ -2,15 +2,11 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import styles from "./IntroductionBg.module.css";
 
-type Props = { isPlaying?: boolean; lockedProgress?: number };
+type Props = { lockedProgress?: number };
 
-export default function IntroductionBg({ isPlaying = false, lockedProgress }: Props) {
+export default function IntroductionBg({ lockedProgress }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
 
-  const isPlayingRef = useRef(isPlaying);
-
-
-  useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
   const lockedRef = useRef(lockedProgress);
   useEffect(() => {lockedRef.current = lockedProgress;}, [lockedProgress]);
 
@@ -111,17 +107,16 @@ const randomPos = (out: Float32Array, i: number) => {
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const speed = isPlayingRef.current ? 1.6 : 1.0;
-      t += 0.002 * speed;
+      t += 0.002;
 
       scroll.progress += (scroll.target - scroll.progress) * 0.06;
       const p = scroll.progress;
 
       // ── Background stars ──
       for (let i=0;i<N;i++) {
-        pos3[i*3]  +=(bgVel[i*3]  +Math.sin(t*0.15+bgPh[i])*0.003)*speed;
-        pos3[i*3+1]+=(bgVel[i*3+1]+Math.cos(t*0.12+bgPh[i])*0.002)*speed;
-        pos3[i*3+2]+=bgVel[i*3+2]*speed;
+        pos3[i*3]  +=bgVel[i*3]  +Math.sin(t*0.15+bgPh[i])*0.003;
+        pos3[i*3+1]+=bgVel[i*3+1]+Math.cos(t*0.12+bgPh[i])*0.002;
+        pos3[i*3+2]+=bgVel[i*3+2];
         const x=pos3[i*3],y=pos3[i*3+1],z=pos3[i*3+2];
         if (Math.abs(x) > SPREAD_X/2 || Math.abs(y) > SPREAD_Y/2 || Math.abs(z) > SPREAD_Z/2) {
   const s2=0.006+Math.random()*0.01, a2=Math.random()*Math.PI*2, b2=Math.random()*Math.PI*2;
@@ -130,8 +125,8 @@ const randomPos = (out: Float32Array, i: number) => {
 }
       }
       bgGeo.attributes.position.needsUpdate = true;
-      bgParticles.rotation.y += (0.0003+mouse.x*0.0001)*speed;
-      bgParticles.rotation.x += (0.0001+mouse.y*0.0001)*speed;
+      bgParticles.rotation.y += 0.0003+mouse.x*0.0001;
+      bgParticles.rotation.x += 0.0001+mouse.y*0.0001;
 
       // ── Camera dive ──
       const tz = CAM_Z_START + (CAM_Z_END-CAM_Z_START)*p;
