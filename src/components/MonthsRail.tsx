@@ -84,6 +84,7 @@ export default function MonthsRail({ onSelect }: { onSelect?: (year: number, mon
       root.style.pointerEvents = p > SHOW_TO ? "auto" : "none";
       rail.style.pointerEvents = p > ENTER ? "auto" : "none";
       entered = p > ENTER;
+      document.documentElement.dataset.rail = p > 0.6 ? "on" : "off";
       visId = requestAnimationFrame(visLoop);
     };
     visLoop();
@@ -144,6 +145,7 @@ export default function MonthsRail({ onSelect }: { onSelect?: (year: number, mon
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("resize", layout);
       nodes.forEach((o, i) => o.el.removeEventListener("click", clickHandlers[i]));
+      delete document.documentElement.dataset.rail;
     };
   }, []);
 

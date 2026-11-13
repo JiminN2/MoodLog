@@ -1,8 +1,8 @@
 .months-root {
   --text: #fff; --dim: rgba(220,230,255,.6); --accent: #9db4ff;
-  --mono: "Roboto Mono", ui-monospace, Menlo, monospace;
+  --mono: 'Courier New', monospace;
   position: fixed; inset: 0; z-index: 2; color: var(--text);
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--mono);
 }
 .months-root * { box-sizing: border-box; }
 
@@ -38,7 +38,7 @@
 
 .months-root .name, .months-root .num { position: absolute; top: 0; white-space: nowrap; }
 .months-root .name { transform-origin: 0 50%; font-size: 1rem; font-weight: 300; letter-spacing: .03em; }
-.months-root .name small { display: block; margin-top: 4px; font-size: .5rem; color: var(--accent); letter-spacing: .1em; }
+.months-root .name small { display: block; margin-top: 4px; font-size: .5rem; color: var(--accent); letter-spacing: .1em; text-align: left; }
 .months-root .num { transform-origin: 100% 50%; font: 300 .9rem var(--mono); color: var(--dim); }
 
 .months-root .top, .months-root .bottom {

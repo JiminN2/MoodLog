@@ -45,6 +45,13 @@ export default function ConstellationGraph({ data, nodeColors, onNodeTap } : Pro
 
         cy.on("tap", "node", (e) => onNodeTap(e.target.id()));
         cy.on("tap", (e) => { if (e.target === cy) onNodeTap(null); });
+        cy.on("position", "node", (e) => {
+            if (!e.target.grabbed()) return;
+            console.log("node positions:", cy.nodes().map((node) => ({
+                data: { id: node.id() },
+                position: node.position(),
+            })));
+        });
 
         cyRef.current = cy; 
         return () => {
@@ -60,10 +67,5 @@ export default function ConstellationGraph({ data, nodeColors, onNodeTap } : Pro
                 cy.getElementById(id).style("background-color", color)
             });
         }, [nodeColors]);
-
-
-        // test
-        console.log("data:", data);
-
         return <div ref={containerRef} style={{ width: "100%", height: "100%" }} />;
 }

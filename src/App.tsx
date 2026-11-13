@@ -6,10 +6,11 @@ import IntroductionBg from "./components/IntroductionBg.tsx";
 
 function BgLayout() {
   const {pathname} = useLocation();
-  const locked = pathname.startsWith("/mood-log/") ? 0.85 : undefined;
+  const isMoodLog = pathname.startsWith("/mood-log/");
+  const locked = isMoodLog ? 0.85 : undefined;
   return (
     <>
-     <IntroductionBg lockedProgress={locked} />
+     <IntroductionBg lockedProgress={locked} dim={isMoodLog} />
      <Outlet />
     </>
   )

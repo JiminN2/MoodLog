@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
 import styles from "./header.module.css";
 import SoundOn from "./SoundOn/SoundOn.tsx";
+import LogNowButton from "./LogNowButton.tsx";
+
 
 export default function Header() {
   return (
@@ -14,7 +15,7 @@ export default function Header() {
           </ul>
           <ul className={styles.right}>
             <li>
-              <Link to="/mood-log">기록하기</Link>
+              <LogNowButton />
             </li>
           </ul>
         </nav>
