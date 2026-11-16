@@ -11,8 +11,8 @@ function createPathEdges(pathIds: string[]): EdgeDefinition[] {
 export function buildElements(data: ConstellationData): ElementsDefinition {
     return {
         nodes: data.nodes.map((n) => ({
-            data: { id: n.data.id },
-            position: { x: n.position.x, y: n.position.y },
+            data: { ...n.data },
+            position: { ...n.position },
         })),
         edges: data.paths.flatMap(createPathEdges),
     };

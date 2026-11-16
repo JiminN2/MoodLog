@@ -12,8 +12,8 @@ a {
   color: white;
   padding-left: 1rem;
   padding-right: 1rem;
-  text-underline-offset: true;
   z-index: 50;
+  transition: opacity .4s;
 }
 .contents {
   display: flex;
@@ -35,12 +35,8 @@ a {
 
 }
 
-
-.trackButton {
-  background: transparent;
-  border: none;
-  color: inherit;
-  cursor: pointer;
-  font: inherit;
-  padding: 0;
+/* 월 레일이 나타나면 헤더 숨김 */
+:global(html[data-rail="on"] .header) {
+  opacity: 0;
+  pointer-events: none;
 }

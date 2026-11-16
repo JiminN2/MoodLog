@@ -1,93 +1,46 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { useMemo, useState } from "react";
-import Explore from "./components/NasaToday";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Introduction from "./components/Introduction";
-import Months from "./components/MoodLog/Months";
 import MoodLog from "./components/MoodLog/MoodLog";
 import MainLayout from "./Layout";
+import IntroductionBg from "./components/IntroductionBg.tsx";
 
+function BgLayout() {
+  const {pathname} = useLocation();
+  const isMoodLog = pathname.startsWith("/mood-log/");
+  const locked = isMoodLog ? 0.85 : undefined;
+  return (
+    <>
+     <IntroductionBg lockedProgress={locked} dim={isMoodLog} />
+     <Outlet />
+    </>
+  )
+}
 
-
-type Track = {
-  label: string;
-  file: string;
-};
 
 function App() {
-  const navigate = useNavigate();
-  const [currentTrackIndex, setCurrentTrackIndex] = useState<number | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const tracks = useMemo<Track[]>(
-    () => [
-      { label: "Track 1 — Introduction", file: "introduction" },
-      { label: "Track 2 — Orbit", file: "orbit" },
-      { label: "Track 3 — Atmosphere", file: "atmosphere" },
-      { label: "Track 4 — Oceans", file: "oceans" },
-      { label: "Track 5 — Surface", file: "surface" },
-    ],
-    []
-  );
-
-  const activeTrack = currentTrackIndex !== null ? tracks[currentTrackIndex] : null;
-  const hasNextTrack = currentTrackIndex !== null && currentTrackIndex + 1 < tracks.length;
-
-  const handleTrackPlay = (index: number) => {
-    setCurrentTrackIndex(index);
-    setIsPlaying(true);
-    navigate("/introduction");
-  };
-
-  const handleTogglePlay = () => {
-    if (!activeTrack) return;
-    setIsPlaying((prev) => !prev);
-  };
-
-  const handleNextTrack = () => {
-    if (currentTrackIndex === null || currentTrackIndex + 1 >= tracks.length) return;
-    setCurrentTrackIndex(currentTrackIndex + 1);
-    setIsPlaying(true);
-  };
-
-  const handleTrackEnd = () => {
-    setIsPlaying(false);
-  };
-
-  const introProps = {
-    activeTrack,
-    isPlaying,
-    hasNextTrack,
-    onTogglePlay: handleTogglePlay,
-    onNextTrack: handleNextTrack,
-    onTrackEnd: handleTrackEnd,
-  }
-
-
   return (
     
+    
         <Routes>
-          <Route element={<MainLayout onTrackPlay={handleTrackPlay} />} >
+          <Route element={<BgLayout />} >
+          <Route element={<MainLayout />} >
             <Route
               path="/"
-              element={
-                <Introduction {...introProps} />
-              }
+              element={<Introduction />}
             />
             <Route
               path="/introduction"
-              element={
-                <Introduction {...introProps} />
-              }
+              element={<Introduction />}
             />
-            <Route path="/explore" element={<Explore />} />
           </Route>
+         
 
-          <Route path="/mood-log" element={<Months />} />
-          <Route path="/mood-log/:month" element={<MoodLog />} />
+          <Route path="/mood-log" element={<Introduction />} />
+          <Route path="/mood-log/:year/:month" element={<MoodLog />} />
+          </Route>
         </Routes>
 
   );
 }
 
 export default App;
-

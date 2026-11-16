@@ -1,89 +1,41 @@
-import {  useEffect, useRef } from "react";
 import styles from "./Introduction.module.css";
-import IntroductionBg from "./IntroductionBg.tsx";
 import MagneticDotButton from "./DotButton.tsx";
+import MonthsRail from "./MonthsRail";
+import { useScrollProgress } from "./useScrollProgress";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import {useLayoutEffect} from "react";
 
-type Props = {
-  activeTrack: {
-    label: string;
-    file: string;
-  } | null;
-  isPlaying: boolean;
-  hasNextTrack: boolean;
-  onTogglePlay: () => void;
-  onNextTrack: () => void;
-  onTrackEnd: () => void;
-};
+// interface MonthSelection {
+//   year: number;
+//   month: number;
+// }
 
-export default function Introduction({
-  activeTrack,
-  isPlaying,
-  hasNextTrack,
-  onTogglePlay,
-  onNextTrack,
-  onTrackEnd,
-}: Props) {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+export default function Introduction() {
+  const navigate = useNavigate();
 
-    if (isPlaying) {
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying, activeTrack]);
+  const {state} = useLocation();
+useLayoutEffect(() => {
+  if ( state?. fromMonth)window.scrollTo(0, document.documentElement.scrollHeight);
+}, []);
 
+  
+  useScrollProgress(); // ← 추가
 
   return (
     <div className={styles.landing}>
-      <IntroductionBg isPlaying={isPlaying}/>
-       {/* ── All UI sits above the canvas ── */}
-      {/* <div style={{ position: "relative", zIndex: 1 }}></div> */}
-      <div className={styles.centerControls}>
-        {activeTrack && (
-          <>
-            <button
-              type="button"
-              className={styles.controlButton}
-              onClick={onTogglePlay}
-              aria-label={isPlaying ? "Pause" : "Play"}
-            >
-              {isPlaying ? (
-                <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
-                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" fill="currentColor" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
-                  <path d="M8 5v14l11-7z" fill="currentColor" />
-                </svg>
-              )}
-            </button>
-            <button
-              type="button"
-              className={styles.nextButton}
-              onClick={onNextTrack}
-              disabled={!hasNextTrack}
-            >
-              Next Track
-            </button>
-          </>
-        )}
-      </div>
 
-     <MagneticDotButton to="/" />
+      {/* ← 추가: 스크롤 공간 */}
+      <div style={{ height: "300vh" }} />
 
-      {activeTrack && (
-        <>
-          <audio
-            ref={audioRef}
-            src={`/audio/${activeTrack.file}.mp3`}
-            onEnded={onTrackEnd}
-          />
-        </>
-      )}
+      {/* ← 추가: 인트로 타이틀 (스크롤하면 확대되며 사라짐) */}
+      <h1 className={styles.title}>moodlog</h1>
+
+      <MagneticDotButton to="/" />
+
+      {/* ← 추가: 월 선택 화면 */}
+      <MonthsRail onSelect={(y, m) => navigate(`/mood-log/${y}/${m}`)} />
     </div>
   );
 }
