@@ -16,9 +16,9 @@ export const february: ConstellationData = {
         { data: { id: "n12" }, position: { x: 454, y: 428 } },
         { data: { id: "n13" }, position: { x: 529, y: 454 } },
 
-        { data: { id: "n14" }, position: { x: 863, y: 205 } },
+        { data: { id: "n14", decorative: true}, position: { x: 863, y: 205 } },
         { data: { id: "n15" }, position: { x: 864, y: 271 } },
-        { data: { id: "n16" }, position: { x: 907, y: 351 } },
+        { data: { id: "n16" ,decorative: true}, position: { x: 907, y: 351 } },
         { data: { id: "n17" }, position: { x: 925, y: 452 } },
         { data: { id: "n18" }, position: { x: 892, y: 505 } },
         { data: { id: "n19" }, position: { x: 848, y: 509 } },

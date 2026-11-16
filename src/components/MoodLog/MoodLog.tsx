@@ -88,6 +88,7 @@ export default function MoodLog() {
     return <div>해당 월의 별자리 데이터가 없어요</div>;
   }
 
+
   
   return (
     <div className={styles.Container} >
@@ -98,6 +99,7 @@ export default function MoodLog() {
           data={data}
           nodeColors={nodeColors}
           onNodeTap={setSelectedNode}
+          interactive={true}
         />
         </div>      
         <Sidebar 
